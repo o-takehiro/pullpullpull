@@ -888,7 +888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2665687741473678541, guid: 026b7e2e92ea8b64da45e80b6f4d982e, type: 3}
       propertyPath: m_Name
-      value: HookShotl_SP0
+      value: HookShot_SP0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1913217731136388271, guid: 026b7e2e92ea8b64da45e80b6f4d982e, type: 3}
@@ -912,7 +912,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6814908227835860194, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_Name
-      value: HookShotl_SP2
+      value: HookShot_SP2
       objectReference: {fileID: 0}
     - target: {fileID: 7616537635912198467, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_LocalScale.x
@@ -1060,7 +1060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7616537635912198467, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.458
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7616537635912198467, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1116,7 +1116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6814908227835860194, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_Name
-      value: HookShotl_SP1
+      value: HookShot_SP1
       objectReference: {fileID: 0}
     - target: {fileID: 7616537635912198467, guid: 19c9bbaf8345017408169351db120864, type: 3}
       propertyPath: m_LocalScale.x
@@ -1388,7 +1388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2294036148427436818, guid: 8aaff3e49c16c674d9b8fc47af569ee3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.448
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2294036148427436818, guid: 8aaff3e49c16c674d9b8fc47af569ee3, type: 3}
       propertyPath: m_LocalPosition.z

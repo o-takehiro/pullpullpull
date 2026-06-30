@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1269008488056041413}
   - component: {fileID: 1913217731136388271}
   m_Layer: 0
-  m_Name: HookShotl_SP0
+  m_Name: HookShot_SP0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
