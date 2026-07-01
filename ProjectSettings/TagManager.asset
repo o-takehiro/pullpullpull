@@ -7,6 +7,10 @@ TagManager:
   - ground
   - box
   - hasi
+  - Wall
+  - Ground
+  - Fence
+  - Bridge
   layers:
   - Default
   - TransparentFX
