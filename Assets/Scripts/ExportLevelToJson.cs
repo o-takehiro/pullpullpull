@@ -12,6 +12,13 @@ enum Direction {
 
 [ExecuteInEditMode]
 public class ExportLevelToJson : MonoBehaviour {
+
+
+    [Header("JSON出力先")]
+    [SerializeField]
+    private string outputDirectory;
+
+
     [System.Serializable]
     public class Block {
         public float minX, minY, minZ;
@@ -57,36 +64,40 @@ public class ExportLevelToJson : MonoBehaviour {
                 data.blocks.Add(b);
         }
 
-        // ✅ Groundをマージ
+        // Groundをマージ
         List<Block> mergedGround = MergeGroundBlocks(groundBlocks);
         mergedGround = RemoveFullySurrounded(mergedGround);
         data.blocks.AddRange(mergedGround);
 
         string json = JsonUtility.ToJson(data, true);
 
-        string desktop = System.Environment.GetFolderPath(
-            System.Environment.SpecialFolder.Desktop);
+        if (string.IsNullOrEmpty(outputDirectory)) {
+            Debug.LogError("JSON出力先が設定されていません");
+            return;
+        }
 
-        string dir = desktop + "/就活用/Pull/PullProject/src/Data/";
-        Directory.CreateDirectory(dir);
+        Directory.CreateDirectory(outputDirectory);
 
         string stageName = transform.parent != null
             ? transform.parent.name
             : "Stage";
 
-        string path = dir + stageName + ".json";
+        string path = Path.Combine(
+            outputDirectory,
+            stageName + ".json"
+        );
 
         File.WriteAllText(path, json);
 
-        Debug.Log("✅ 出力数: " + data.blocks.Count);
-        Debug.Log("📂 出力先: " + path);
+        Debug.Log("出力数: " + data.blocks.Count);
+        Debug.Log("出力先: " + path);
     }
 
     // ===========================
     // Block作成（数値丸め込み）
     // ===========================
     Block CreateBlock(GameObject obj, BoxCollider box) {
-        // ✅ 回転込みAABB取得（これが核心）
+        //  回転込みAABB取得（これが核心）
         Bounds bounds = box.bounds;
 
         Vector3 min = bounds.min;
@@ -105,7 +116,7 @@ public class ExportLevelToJson : MonoBehaviour {
     }
 
     // ===========================
-    // 数値丸め（超重要）
+    // 数値丸め
     // ===========================
     float Round(float v) {
         return Mathf.Round(v * 100f) / 100f; // 小数第2位
