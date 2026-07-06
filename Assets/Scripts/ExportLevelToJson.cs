@@ -76,21 +76,29 @@ public class ExportLevelToJson : MonoBehaviour {
             return;
         }
 
-        Directory.CreateDirectory(outputDirectory);
+        string dir = Path.Combine(
+            outputDirectory,
+            "PullProject",
+            "src",
+            "Data"
+        );
+
+        Directory.CreateDirectory(dir);
 
         string stageName = transform.parent != null
             ? transform.parent.name
             : "Stage";
 
         string path = Path.Combine(
-            outputDirectory,
+            dir,
             stageName + ".json"
         );
 
         File.WriteAllText(path, json);
 
-        Debug.Log("出力数: " + data.blocks.Count);
-        Debug.Log("出力先: " + path);
+        Debug.Log("✅ 出力数: " + data.blocks.Count);
+        Debug.Log("📂 出力先: " + path);
+
     }
 
     // ===========================
