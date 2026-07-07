@@ -95,10 +95,7 @@ public class ExportLevelToJson : MonoBehaviour {
         }
 
         string dir = Path.Combine(
-            outputDirectory,
-            "PullProject",
-            "src",
-            "Data"
+            outputDirectory
         );
 
         Directory.CreateDirectory(dir);
