@@ -21,7 +21,7 @@ public class ExportGimmickToJson : MonoBehaviour {
 
         foreach (GameObject obj in objs) {
             if (obj.name.StartsWith("LeverPoint") ||
-                obj.name.StartsWith("LeverSP")) {
+                obj.name.StartsWith("Lever_SP")) {
                 LeverPoint lever = obj.GetComponent<LeverPoint>();
 
                 if (lever == null)
