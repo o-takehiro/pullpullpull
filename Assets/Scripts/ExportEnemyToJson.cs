@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -29,6 +30,23 @@ public class ExportEnemyToJson : MonoBehaviour {
 
     private string prefabName = "Enemy_SP{}";
     private int searchMaxCount = 100;
+
+#if UNITY_EDITOR
+    [ContextMenu("Select Output Folder")]
+    void SelectOutputFolder() {
+        string selected = EditorUtility.OpenFolderPanel(
+            "PullProjectの親フォルダを選択",
+            "",
+            ""
+        );
+
+        if (!string.IsNullOrEmpty(selected)) {
+            outputDirectory = selected;
+            Debug.Log("選択: " + outputDirectory);
+        }
+    }
+#endif
+
 
     [ContextMenu("Export StageCollisionData (Optimized)")]
     void Export() {

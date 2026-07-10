@@ -64,7 +64,8 @@ public class ExportLevelToJson : MonoBehaviour {
                   obj.CompareTag("SubGround") ||
                   obj.CompareTag("Wall") ||
                   obj.CompareTag("box") ||
-                  obj.CompareTag("tomb")))
+                  obj.CompareTag("tomb")||
+                  obj.CompareTag("MissileWall")))
                 continue;
 
             BoxCollider box = obj.GetComponent<BoxCollider>();

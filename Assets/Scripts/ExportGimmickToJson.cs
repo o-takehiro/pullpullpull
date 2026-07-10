@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -8,6 +9,23 @@ public class ExportGimmickToJson : MonoBehaviour {
     [Header("JSON出力先")]
     [SerializeField]
     private string outputDirectory;
+
+#if UNITY_EDITOR
+    [ContextMenu("Select Output Folder")]
+    void SelectOutputFolder() {
+        string selected = EditorUtility.OpenFolderPanel(
+            "PullProjectの親フォルダを選択",
+            "",
+            ""
+        );
+
+        if (!string.IsNullOrEmpty(selected)) {
+            outputDirectory = selected;
+            Debug.Log("選択: " + outputDirectory);
+        }
+    }
+#endif
+
 
     [ContextMenu("Export Gimmick Json")]
     void Export() {
