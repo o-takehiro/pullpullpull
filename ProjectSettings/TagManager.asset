@@ -12,6 +12,7 @@ TagManager:
   - Fence
   - Bridge
   - tomb
+  - MissileWall
   layers:
   - Default
   - TransparentFX
