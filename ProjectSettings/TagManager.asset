@@ -13,6 +13,7 @@ TagManager:
   - Bridge
   - tomb
   - MissileWall
+  - Retry
   layers:
   - Default
   - TransparentFX
