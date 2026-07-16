@@ -3,9 +3,13 @@ using UnityEngine;
 using UnityEditor;
 
 public class PrefabGridSpawner : EditorWindow {
+
     public enum SpawnMode {
-        Alternate, // 交互配置
-        Random     // ランダム配置
+        Alternate,
+        Random,
+        Road,
+        Circle,
+        FilledCircle
     }
 
     private List<GameObject> prefabs = new();
@@ -15,6 +19,9 @@ public class PrefabGridSpawner : EditorWindow {
     private int countX = 1;
     private int countY = 1;
     private int countZ = 1;
+
+    private float circleRadius = 10f;
+    private int circleCount = 16;
 
     private bool clearChildrenBeforeSpawn = false;
 
@@ -64,6 +71,21 @@ public class PrefabGridSpawner : EditorWindow {
             spawnMode);
 
         EditorGUILayout.Space();
+
+        if (spawnMode == SpawnMode.Circle) {
+
+            circleRadius = Mathf.Max(
+                1f,
+                EditorGUILayout.FloatField(
+                    "半径",
+                    circleRadius));
+
+            circleCount = Mathf.Max(
+                3,
+                EditorGUILayout.IntField(
+                    "配置数",
+                    circleCount));
+        }
 
         parentObject = (GameObject)EditorGUILayout.ObjectField(
             "親オブジェクト",
@@ -129,6 +151,161 @@ public class PrefabGridSpawner : EditorWindow {
         }
     }
 
+
+    private void SpawnCircle(
+        List<GameObject> validPrefabs) {
+        int alternateIndex = 0;
+
+        for (int i = 0; i < circleCount; i++) {
+            float angle =
+                (360f / circleCount) * i;
+
+            float rad =
+                angle * Mathf.Deg2Rad;
+
+            Vector3 position =
+                new Vector3(
+                    Mathf.Cos(rad) * circleRadius,
+                    0f,
+                    Mathf.Sin(rad) * circleRadius);
+
+            GameObject selectedPrefab =
+                validPrefabs[
+                    alternateIndex %
+                    validPrefabs.Count];
+
+            alternateIndex++;
+
+            GameObject obj =
+                (GameObject)PrefabUtility
+                .InstantiatePrefab(
+                    selectedPrefab);
+
+            Undo.RegisterCreatedObjectUndo(
+                obj,
+                "Create Circle");
+
+            obj.transform.SetParent(
+                parentObject.transform,
+                false);
+
+            obj.transform.localPosition =
+                position;
+        }
+    }
+
+    private void SpawnFilledCircle(
+    List<GameObject> validPrefabs,
+    Vector3 size) {
+        int alternateIndex = 0;
+
+        for (float x = -circleRadius;
+             x <= circleRadius;
+             x += size.x) {
+            for (float z = -circleRadius;
+                 z <= circleRadius;
+                 z += size.z) {
+                if ((x * x) + (z * z) >
+                    circleRadius * circleRadius) {
+                    continue;
+                }
+
+                GameObject selectedPrefab =
+                    validPrefabs[
+                        alternateIndex %
+                        validPrefabs.Count];
+
+                alternateIndex++;
+
+                GameObject obj =
+                    (GameObject)PrefabUtility
+                    .InstantiatePrefab(
+                        selectedPrefab);
+
+                Undo.RegisterCreatedObjectUndo(
+                    obj,
+                    "Create Filled Circle");
+
+                obj.transform.SetParent(
+                    parentObject.transform,
+                    false);
+
+                obj.transform.localPosition =
+                    new Vector3(
+                        x,
+                        0,
+                        z);
+            }
+        }
+    }
+
+    private void SpawnRandomWalk(
+    List<GameObject> validPrefabs,
+    Vector3 size) {
+        int length = countX;
+
+        Vector3Int current = Vector3Int.zero;
+
+        HashSet<Vector3Int> used = new();
+
+        for (int i = 0; i < length; i++) {
+            GameObject selectedPrefab =
+                validPrefabs[
+                    Random.Range(
+                        0,
+                        validPrefabs.Count)];
+
+            GameObject obj =
+                (GameObject)PrefabUtility
+                .InstantiatePrefab(selectedPrefab);
+
+            Undo.RegisterCreatedObjectUndo(
+                obj,
+                "Create Path");
+
+            obj.transform.SetParent(
+                parentObject.transform,
+                false);
+
+            obj.transform.localPosition =
+                new Vector3(
+                    current.x * size.x,
+                    current.y * size.y,
+                    current.z * size.z);
+
+            used.Add(current);
+
+            List<Vector3Int> directions =
+                new List<Vector3Int>()
+                {
+                Vector3Int.right,
+                Vector3Int.left,
+                Vector3Int.forward,
+                Vector3Int.back
+                };
+
+            for (int j = directions.Count - 1;
+                 j > 0;
+                 j--) {
+                int k = Random.Range(0, j + 1);
+
+                (directions[j], directions[k]) =
+                    (directions[k], directions[j]);
+            }
+
+            foreach (var dir in directions) {
+                Vector3Int next = current + dir;
+
+                if (!used.Contains(next)) {
+                    current = next;
+                    break;
+                }
+            }
+        }
+
+        Debug.Log($"道生成完了 : {length}個");
+    }
+
     private void SpawnGrid() {
         List<GameObject> validPrefabs = new();
 
@@ -154,9 +331,35 @@ public class PrefabGridSpawner : EditorWindow {
 
         Vector3 size = renderer.bounds.size;
 
+
+        if (spawnMode == SpawnMode.Road) {
+            SpawnRandomWalk(
+                validPrefabs,
+                size);
+
+            return;
+        }
+
+
         Undo.RegisterCompleteObjectUndo(
-            parentObject,
-            "Spawn Grid");
+        parentObject,
+        "Spawn Grid");
+
+
+        if (spawnMode == SpawnMode.Circle) {
+            SpawnCircle(
+                validPrefabs);
+
+            return;
+        }
+
+        if (spawnMode == SpawnMode.FilledCircle) {
+            SpawnFilledCircle(
+                validPrefabs,
+                size);
+
+            return;
+        }
 
         if (clearChildrenBeforeSpawn) {
             for (int i = parentObject.transform.childCount - 1;
@@ -223,4 +426,5 @@ public class PrefabGridSpawner : EditorWindow {
         Debug.Log(
             $"生成完了 : {createdCount}個 ({spawnMode})");
     }
+
 }
