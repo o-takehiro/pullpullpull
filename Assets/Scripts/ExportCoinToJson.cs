@@ -1,35 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-[System.Serializable]
-struct StageEnemyData {
-    public string frameName;
-    public EnemyType enemyType;
-
-    public StageEnemyData(string frameName, EnemyType enemyType) {
-        this.frameName = frameName;
-        this.enemyType = enemyType;
-    }
-}
-
-[System.Serializable]
-class EnemyDataList {
-    public List<StageEnemyData> data = new();
-}
-
 
 [ExecuteInEditMode]
-public class ExportEnemyToJson : MonoBehaviour {
+public class ExportCoinToJson : MonoBehaviour {
+
 
     [Header("JSON出力先")]
     [SerializeField]
     private string outputDirectory;
 
-    private string prefabName = "Enemy_SP{}";
-    private int searchMaxCount = 100;
 
 #if UNITY_EDITOR
     [ContextMenu("Select Output Folder")]
@@ -47,33 +30,43 @@ public class ExportEnemyToJson : MonoBehaviour {
     }
 #endif
 
+    [System.Serializable]
+    struct StageCoinData {
+        public string frameName;
+
+        public StageCoinData(string frameName) {
+            this.frameName = frameName;
+        }
+    }
+
+    [System.Serializable]
+    class CoinDataList {
+        public List<StageCoinData> data = new();
+    }
+
+    private string prefabName = "Coin_SP{0}";
+    private int searchMaxCount = 100;
 
     [ContextMenu("Export StageCollisionData (Optimized)")]
     void Export() {
-        EnemyDataList enemySpawnPoints = new();
+        GameObject[] objs = GameObject.FindObjectsOfType<GameObject>();
+
+        CoinDataList coinSpawnPoints = new();
         // シーンにあるスポーンポイントを名前から取得
         for (int i = 0; i < searchMaxCount; i++) {
-            string name = string.Format("Enemy_SP{0}", i);
+            string name = string.Format(prefabName, i);
             GameObject obj = GameObject.Find(name);
             if (obj != null) {
-                // EnemySpawnPointの取得
-                EnemySpawnPoint enemySpawnPoint = obj.GetComponent<EnemySpawnPoint>();
-                StageEnemyData data;
-                // 取得出来たらEnemyTypeをもらう
-                if (enemySpawnPoint != null)
-                    data = new StageEnemyData(name, enemySpawnPoint.enemyType);
-                else
-                    //取得できなかったらWalkとする
-                    data = new StageEnemyData(name, EnemyType.Walk);
-                ;
 
-                enemySpawnPoints.data.Add(data);
+                StageCoinData data = new StageCoinData(name);
+
+                coinSpawnPoints.data.Add(data);
             } else
                 // Nullだったら最後のスポーンポイントとして抜ける
                 break;
         }
 
-        string json = JsonUtility.ToJson(enemySpawnPoints, true);
+        string json = JsonUtility.ToJson(coinSpawnPoints, true);
 
         if (string.IsNullOrEmpty(outputDirectory)) {
             Debug.LogError("JSON出力先が設定されていません");
@@ -87,7 +80,7 @@ public class ExportEnemyToJson : MonoBehaviour {
         Directory.CreateDirectory(dir);
 
         string stageName = transform.parent != null
-            ? transform.parent.name + "_EnemyData"
+            ? transform.parent.name + "_CoinData"
             : "Stage";
 
         string path = Path.Combine(
@@ -97,7 +90,9 @@ public class ExportEnemyToJson : MonoBehaviour {
 
         File.WriteAllText(path, json);
 
-        Debug.Log("✅ 出力数: " + enemySpawnPoints.data.Count);
+        Debug.Log("✅ 出力数: " + coinSpawnPoints.data.Count);
         Debug.Log("📂 出力先: " + path);
+
     }
+
 }
