@@ -66,6 +66,11 @@ public class ExportLevelToJson : MonoBehaviour {
                   obj.CompareTag("box") ||
                   obj.CompareTag("tomb")||
                   obj.CompareTag("MissileWall")||
+                  obj.CompareTag("Stage1")||
+                  obj.CompareTag("Stage2")||
+                  obj.CompareTag("Stage3")||
+                  obj.CompareTag("Stage4")||
+                  obj.CompareTag("Stage5")||
                   obj.CompareTag("Retry")))
                 continue;
 
