@@ -8,10 +8,14 @@ using UnityEngine;
 struct StageEnemyData {
     public string frameName;
     public EnemyType enemyType;
+    public float wanderingRadius;
+    public float rotationY;
 
-    public StageEnemyData(string frameName, EnemyType enemyType) {
+    public StageEnemyData(string frameName, EnemyType enemyType, float _wanderingRadius, float _rotationY) {
         this.frameName = frameName;
         this.enemyType = enemyType;
+        this.wanderingRadius = _wanderingRadius;
+        this.rotationY = _rotationY;
     }
 }
 
@@ -61,10 +65,10 @@ public class ExportEnemyToJson : MonoBehaviour {
                 StageEnemyData data;
                 // 取得出来たらEnemyTypeをもらう
                 if (enemySpawnPoint != null)
-                    data = new StageEnemyData(name, enemySpawnPoint.enemyType);
+                    data = new StageEnemyData(name, enemySpawnPoint.enemyType, enemySpawnPoint.wanderingRadius, enemySpawnPoint.rotationY);
                 else
                     //取得できなかったらWalkとする
-                    data = new StageEnemyData(name, EnemyType.Walk);
+                    data = new StageEnemyData(name, EnemyType.Walk, 1000, 0);
                 ;
 
                 enemySpawnPoints.data.Add(data);

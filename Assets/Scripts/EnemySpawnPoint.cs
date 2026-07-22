@@ -12,4 +12,8 @@ public enum EnemyType{
 public class EnemySpawnPoint : MonoBehaviour{
     [SerializeField]
     public EnemyType enemyType;
+    [SerializeField]
+    public float wanderingRadius = 1000;
+    [SerializeField]
+    public float rotationY = 0;
 }

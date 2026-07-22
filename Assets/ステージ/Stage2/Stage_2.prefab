@@ -4376,6 +4376,10 @@ PrefabInstance:
       propertyPath: enemyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3626073521569452770, guid: 77892cc609de90544990fe3778745dc4, type: 3}
+      propertyPath: wanderingRadius
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 9189401094979181031, guid: 77892cc609de90544990fe3778745dc4, type: 3}
       propertyPath: m_Name
       value: Enemy_SP0
@@ -5520,7 +5524,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3179082545432011445, guid: 3109e55123b43754a80753043f89451c, type: 3}
       propertyPath: outputDirectory
-      value: "C:\\Users\\student2\\Documents\\\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u30EF\u30FC\u30AF\\jsonFIle\\Enemy\\Stage2"
+      value: C:/Users/student2/Desktop/new/Pull/PullProject/src/Data/Stage
       objectReference: {fileID: 0}
     - target: {fileID: 7619781579215738316, guid: 3109e55123b43754a80753043f89451c, type: 3}
       propertyPath: outputDirectory
@@ -13150,6 +13154,10 @@ PrefabInstance:
     - target: {fileID: 3626073521569452770, guid: 77892cc609de90544990fe3778745dc4, type: 3}
       propertyPath: enemyType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626073521569452770, guid: 77892cc609de90544990fe3778745dc4, type: 3}
+      propertyPath: wanderingRadius
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 9189401094979181031, guid: 77892cc609de90544990fe3778745dc4, type: 3}
       propertyPath: m_Name
